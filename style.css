@@ -15,13 +15,30 @@ div.car {
 	top:0;
 
 	-webkit-transition: left 0.25s ease-in-out, top 0.25s ease-in-out;
-	transition: left 0.25s ease-in-out, top 0.25s ease-in-out;
+	transition: left 0.25s ease-in-out, top 0.25s ease-in-out, transform 0.5s ease-in;
 
 	box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+	text-align:center;
+
+	animation: slide_down 0.5s ease-out 1;
+}
+
+div.car.urgent {
+	outline: 4px solid red;
+	animation: urgent 0.5s linear infinite;
 }
 
 div.car.selected {
 	border-color: black;
+}
+
+div.car.yours {
+	outline: 8px solid aliceblue !important;
+	box-shadow: 0px 0px 12px blue;
+}
+
+div.car.yours.leaving {
+	animation: slide_up 0.5s ease-out 1;
 }
 
 div.no-parking {
@@ -31,3 +48,37 @@ div.no-parking {
 	border: 4px solid yellow;
 	background-image:url(images/caution.png);
 }
+
+div.clock
+{
+	position:relative;
+	background-color:lightgray;
+	width:128px;
+	height:128px;
+	border-radius:4em;
+	box-sizing:border-box;
+	background-image:url(images/clock.png);
+}
+
+div.clock div.hand{
+	position:absolute;
+	bottom:50%;
+	left:62px;
+	width:4px;
+	background-color:black;
+	transform-origin: 50% 100%;
+
+	transition: transform 1s linear; 
+}
+
+div.hour.hand {
+	height:35%;
+}
+
+div.minute.hand {
+	height:45%;
+}
+
+@keyframes slide_down { from { transform:translate(0%, -100%); } to { transform: translate(0%, 0%)}  }
+@keyframes slide_up { from { transform:translate(0%, 100%); } to { transform: translate(0%, 0%)}  }
+@keyframes urgent { from { outline-color:red; } to { outline-color: currentcolor; }  }
