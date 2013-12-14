@@ -60,6 +60,9 @@ Game.prototype.tick = function() {
 	}
 
 	this.grid.tick(this.time);
+
+	if(!(this.grid.cars.length || this.level.length))
+		this.win();
 };
 
 Game.prototype.spawnCars = function() {
@@ -74,14 +77,12 @@ Game.prototype.spawnPlayerCar = function(leaving) {
 	if(leaving) {
 		playerCar.x = Math.floor(this.grid.width/2);
 		playerCar.y =  this.grid.height-1;
-	}
-	playerCar.node.classList.add('yours');
-	if(leaving)
 		playerCar.node.classList.add('leaving');
+	}
 	else
 		playerCar.returning = true;
-	this.grid.addCar(playerCar);
 
-	if(!(this.grid.cars.length || this.level.length))
-		this.win();
+	playerCar.node.classList.add('yours');
+
+	this.grid.addCar(playerCar);
 };
