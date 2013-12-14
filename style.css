@@ -1,0 +1,16 @@
+div#grid {
+	position:relative;
+	background-color:lightgray;
+}
+
+div.car {
+	box-sizing:border-box;
+	border: 1px solid black;
+	position:absolute;
+	background-color: lime;
+
+	left: 0;
+	top:0;
+
+	transition: left 0.25s ease-in-out, top 0.25s ease-in-out;
+}
