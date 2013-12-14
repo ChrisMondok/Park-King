@@ -11,11 +11,22 @@ function Game() {
 	this.clock.time = this.time;
 
 	this.interval = null;
+
+	var moves = 0;
+	Object.defineProperty(this,'moves',{
+		get: function() { return moves; },
+		set: function(m) {
+			moves = m;
+			document.getElementById('moveCount').innerHTML = m;
+		}
+	});
 }
 
 Game.prototype.start = function(level) {
-	if(level)
+	if(level) {
 		this.level = level;
+		this.moves = 0;
+	}
 	this._lastTick = new Date();
 	this.interval = setInterval(this.tick.bind(this), TICK_INTERVAL);
 };
@@ -27,13 +38,13 @@ Game.prototype.stop = function() {
 };
 
 Game.prototype.win = function() {
-	alert("Level complete");
 	this.stop();
+	alert("Level complete");
 };
 
 Game.prototype.lose = function() {
-	alert("Game over");
 	this.stop();
+	alert("Game over");
 };
 
 Game.prototype.tick = function() {
@@ -61,7 +72,7 @@ Game.prototype.tick = function() {
 
 	this.grid.tick(this.time);
 
-	if(!(this.grid.cars.length || this.level.length))
+	if(!(this.grid.cars.length || this.level.length || this.time >= 17))
 		this.win();
 };
 
@@ -77,12 +88,12 @@ Game.prototype.spawnPlayerCar = function(leaving) {
 	if(leaving) {
 		playerCar.x = Math.floor(this.grid.width/2);
 		playerCar.y =  this.grid.height-1;
-		playerCar.node.classList.add('leaving');
+		playerCar.node.addClass('leaving');
 	}
 	else
 		playerCar.returning = true;
 
-	playerCar.node.classList.add('yours');
+	playerCar.node.addClass('yours');
 
 	this.grid.addCar(playerCar);
 };

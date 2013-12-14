@@ -48,6 +48,8 @@ Grid.prototype.renderInto = function(parentNode) {
 	node.appendChild(bottomNoParking);
 
 	this.node.addEventListener('mousemove', this.mouseMove.bind(this));
+	this.node.addEventListener('mouseleave', this.clearSelection.bind(this));
+	this.node.addEventListener('mouseup', this.clearSelection.bind(this));
 };
 
 Grid.prototype.addCar = function(car) {
@@ -92,17 +94,21 @@ Grid.prototype.carClicked = function(car,e) {
 	if(this.disabled)
 		return;
 
-	if(this.selected == car)
-		this.selected = null;
-	else
-		this.selected = car;
+	this.selected = car;
+	e.preventDefault();
 	e.stopPropagation();
 };
+
+Grid.prototype.carUnclicked = function(car,e) {
+	this.selected = null;
+	e.preventDefault();
+	e.stopPropagation();
+}
 
 Grid.prototype.mouseMove = function(e) {
 	if(!this.selected || this.disabled)
 		return;
-	
+
 	var rect = this.node.getBoundingClientRect();
 
 	var mx = e.clientX - rect.left,
@@ -113,12 +119,21 @@ Grid.prototype.mouseMove = function(e) {
 
 	while(this.selected && this.selected.y != y) {
 		this.selected.y += (y-this.selected.y)/Math.abs(y-this.selected.y);
+		this.game.moves++;
 		this.checkCollision();
 	}
 	while(this.selected && this.selected.x != x) {
 		this.selected.x += (x-this.selected.x)/Math.abs(x-this.selected.x);
+		this.game.moves++;
 		this.checkCollision();
 	}
+
+	e.preventDefault();
+	e.stopPropagation();
+};
+
+Grid.prototype.clearSelection = function(e) {
+	this.selected = null;
 };
 
 Grid.prototype.carsCollided = function(a,b) {

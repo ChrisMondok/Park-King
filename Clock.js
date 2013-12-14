@@ -15,6 +15,9 @@ Clock.prototype.updateHands = function() {
 	var hourDegrees = Math.floor(360*(this.time / 12));
 	var minuteDegrees = Math.floor(360*((this.time%1))) + 360*Math.floor(this.time);
 
+
+	this.hourHand.style.webkitTransform = 'rotate('+hourDegrees+'deg)';
+	this.minuteHand.style.webkitTransform = 'rotate('+minuteDegrees+'deg)';
 	this.hourHand.style.transform = 'rotate('+hourDegrees+'deg)';
 	this.minuteHand.style.transform = 'rotate('+minuteDegrees+'deg)';
 

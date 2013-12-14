@@ -1,3 +1,8 @@
+div#gridContainer, div#clockContainer {
+	position:relative;
+	display:inline-block;
+	vertical-align:middle;
+}
 div#grid {
 	position:relative;
 	background-color:lightgray;
@@ -20,11 +25,16 @@ div.car {
 	box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
 	text-align:center;
 
+	-webkit-animation: slide_down 0.5s ease-out 1;
 	animation: slide_down 0.5s ease-out 1;
 }
 
 div.car.urgent {
-	outline: 4px solid red;
+	outline-width:4px;
+	outline-style: solid;
+	outline-color: black;
+	color: red;
+	-webkit-animation: urgent 0.5s linear infinite;
 	animation: urgent 0.5s linear infinite;
 }
 
@@ -38,6 +48,7 @@ div.car.yours {
 
 div.car.yours.leaving {
 	animation: slide_up 0.5s ease-out 1;
+	text-decoration:underline;
 }
 
 div.no-parking {
@@ -65,8 +76,11 @@ div.clock div.hand{
 	left:62px;
 	width:4px;
 	background-color:black;
+
+	-webkit-transform-origin: 50% 100%;
 	transform-origin: 50% 100%;
 
+	-webkit-transition: -webkit-transform 1s linear; 
 	transition: transform 1s linear; 
 }
 
@@ -78,6 +92,28 @@ div.minute.hand {
 	height:45%;
 }
 
-@keyframes slide_down { from { transform:translate(0%, -100%); } to { transform: translate(0%, 0%)}  }
-@keyframes slide_up { from { transform:translate(0%, 100%); } to { transform: translate(0%, 0%)}  }
-@keyframes urgent { from { outline-color:red; } to { outline-color: currentcolor; }  }
+@-webkit-keyframes urgent {
+	from { outline-color:red; }
+	to { outline-color: black; } 
+}
+@-webkit-keyframes slide_down {
+	from { -webkit-transform:translate(0%, -100%); }
+	to { -webkit-transform: translate(0%, 0%) }
+}
+@-webkit-keyframes slide_up {
+	from { -webkit-transform:translate(0%, 100%); }
+	to { -webkit-transform: translate(0%, 0%); }
+}
+
+@keyframes urgent {
+	from { outline-color:red; }
+	to { outline-color: black; } 
+}
+@keyframes slide_down {
+	from { transform:translate(0%, -100%); }
+	to { transform: translate(0%, 0%) }
+}
+@keyframes slide_up {
+	from { transform:translate(0%, 100%); }
+	to { transform: translate(0%, 0%) }
+}

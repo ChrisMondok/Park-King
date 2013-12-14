@@ -26,9 +26,9 @@ function Car(due) {
 		get: function() { return selected; },
 		set: function(s) {
 			if(selected && !s)
-				this.node.classList.remove('selected');
+				this.node.removeClass('selected');
 			if(!selected && s)
-				this.node.classList.add('selected');
+				this.node.addClass('selected');
 			selected = s;
 		}
 	});
@@ -40,7 +40,7 @@ Car.prototype.createNode = function() {
 	this.node.style.width = CAR_WIDTH+'px';
 	this.node.style.height = CAR_HEIGHT+'px';
 	this.node.style.lineHeight = CAR_HEIGHT+'px';
-	this.node.style.backgroundColor = "hsl("+Math.floor(Math.random() * 360)+",50%,50%)";
+	this.node.style.backgroundColor = "hsl("+Math.floor(Math.random() * 360)+",50%,75%)";
 	this.node.innerHTML = this.decimalToTime(this.due);
 };
 
@@ -56,14 +56,18 @@ Car.prototype.decimalToTime = function(decimal) {
 };
 
 Car.prototype.leave = function() {
-	if(this.returning)
+	if(this.returning) {
+		this.node.style.webkitTransform = "translate(0%,100%)";
 		this.node.style.transform = "translate(0%,100%)";
-	else
+	}
+	else {
+		this.node.style.webkitTransform = "translate(0%,-100%)";
 		this.node.style.transform = "translate(0%,-100%)";
+	}
 };
 
 Car.prototype.urgent = function() {
-	this.node.classList.add("urgent");
+	this.node.addClass("urgent");
 };
 
 Car.prototype.isAtDestination = function(grid) {
