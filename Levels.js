@@ -9,7 +9,8 @@ window.levels = [
 		{type: 'message', time: 9.7, message: 'Make sure the car is in the top row at that time.'},
 		{type: 'message', time: 10.25, message: 'We\'re going to skip forward a bit.'},
 		{type: 'fastforward', time: 10.3, amount: 2},
-		{type: 'message', time: 12.5, message: 'You only get 1:00 for lunch, and if you miss it, you lose.'},
+		{type: 'message', time: 12.5, message: 'Need a break? You only get 1:00.'},
+		{type: 'message', time: 12.6, message:'If you miss lunch, you lose.'},
 		{type: 'message', time: 12.8, message: 'When your car appears at the bottom, drag it to the top by 1:10 PM'},
 		{type: 'message', time: 13 + 1/6, message: 'Once you leave the lot, you cannot move any other cars around.'},
 		{type: 'car', time: 13.25, due: 15},
@@ -21,9 +22,9 @@ window.levels = [
 		{type: 'message', time: 15, message: 'When a car tries to enter the lot, if there is no room in the top row, you lose the game.'},
 		{type: 'car', time: 15.5, due: 16 + 1/6},
 		{type: 'car', time: 15.51, due: 16.75},
-		{type: 'car', time: 15.52, due: 17.25},
+		{type: 'car', time: 15.52, due: 16 + 55/60},
 		{type: 'message', time: 16, message:'Once you leave the lot, any cars that are still there are somebody else\'s problem.'},
-		{type: 'message', time: 16.5, message: 'Drag your car to the top row at the end of the day.'}
+		{type: 'message', time: 16.75, message: 'Drag your car to the top row at the end of the day.'}
 	]},
 	{name:'Level 1', start: 9, end: 17, events:[
 		{type: 'car', time: 9.1, due: 11},
