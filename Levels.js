@@ -17,7 +17,7 @@ window.levels = [
 			{type: 'message', time: 14, message: 'If two cars collide, you lose the game.'},
 			{type: 'car', time: 14, due: 18},
 			{type: 'car', time: 14.1, due: 16.5},
-			{type: 'car', time: 14.2, due: 17},
+			{type: 'car', time: 14.2, due: 18},
 			{type: 'message', time: 15, message: 'When a car tries to enter the lot, if there is no room in the top row, you lose the game.'},
 			{type: 'car', time: 15.5, due: 16 + 1/6},
 			{type: 'car', time: 15.51, due: 16.75},

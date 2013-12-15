@@ -11,7 +11,7 @@ function Game() {
 	this.clock.time = this.time;
 	this.lost = false;
 	this._wasDisabled = false;
-	this.onWin = undefined;
+	this.onEnd = undefined;
 
 	this.interval = null;
 	this.messageNode = document.getElementById('message');
@@ -58,8 +58,8 @@ Game.prototype.stop = function() {
 Game.prototype.win = function() {
 	this.stop();
 	this.addMessage("Level complete!");
-	if(this.onWin)
-		this.onWin(this);
+	if(this.onEnd)
+		this.onEnd(this);
 };
 
 Game.prototype.lose = function(reason) {
@@ -67,6 +67,8 @@ Game.prototype.lose = function(reason) {
 	this.lost = true;
 	this.grid.disabled = true;
 	this.addMessage(reason || "Game Over.");
+	if(this.onEnd)
+		this.onEnd(this);
 };
 
 Game.prototype.tick = function() {

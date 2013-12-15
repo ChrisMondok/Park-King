@@ -53,22 +53,33 @@ Grid.prototype.renderInto = function(parentNode) {
 };
 
 Grid.prototype.addCar = function(car) {
-	this.node.appendChild(car.node);
-
 	if(car.x === undefined) {
-		var x = this.width;
-		do { x--; } while(x && this.getCarAt(x,0))
-		car.x = x;
-		car.y = 0;
+		var freeSpaces = [];
+
+		for(var i = 0; i < this.width; i++) {
+			if(!this.getCarAt(i,0))
+				freeSpaces.push(i);
+		}
+		if(freeSpaces.length) {
+			var x = freeSpaces[Math.floor(Math.random() * freeSpaces.length)];
+			car.x = x;
+			car.y = 0;
+		}
+		else {
+			this.game.lose("No room for new cars!");
+			return false;
+		}
 	}
 
-	this.checkCollision();
+	this.node.appendChild(car.node);
 
 	car.node.addEventListener('mousedown', this.carClicked.bind(this,car));
 
 	this.cars.push(car);
 
 	this.checkCollision();
+
+	return true;
 };
 
 Grid.prototype.removeCar = function(car) {

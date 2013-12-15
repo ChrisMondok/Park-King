@@ -16,7 +16,7 @@ window.addEventListener('load',function() {
 		localStorage.setItem('highscores',JSON.stringify(highScores));
 	}
 
-	game.onWin = function() {
+	game.onEnd = function() {
 		levelSelector.addClass('expanded');
 		if(!highScores[currentLevel.name] || highScores[currentLevel.name] > game.moves) {
 			game.addMessage("New high score!");
