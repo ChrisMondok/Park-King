@@ -41,7 +41,6 @@ function Car(due,yours) {
 			urgent = u;
 		}
 	});
-			
 }
 
 Car.prototype.createNode = function() {

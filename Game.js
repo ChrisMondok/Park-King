@@ -28,13 +28,19 @@ function Game() {
 
 Game.prototype.start = function(level) {
 	if(level) {
-		this.level = level.events.slice();
-		this.level.sort(function(a,b){return a.time - b.time;});
+		this.level = level;
+		this.level.events.sort(function(a,b){return a.time - b.time;});
 		this.moves = 0;
-		this.clock.time = this.time = 9;
+		this.clock.time = this.time = level.start - 0.25;
 		this.grid.clear();
 		this.lost = false;
 		this.grid.disabled = false;
+		if(!level.startAtWork) {
+			this.addMessage("Get to work!");
+			this.spawnPlayerCar(false,level.start);
+		}
+
+		this.eventIndex = 0;
 		document.getElementById('levelname').innerHTML = level.name;
 	}
 	else
@@ -42,7 +48,7 @@ Game.prototype.start = function(level) {
 
 	this._lastTick = new Date();
 	if(this.interval)
-		clearInterval(this.interval)
+		clearInterval(this.interval);
 	this.interval = setInterval(this.tick.bind(this), TICK_INTERVAL);
 };
 
@@ -81,8 +87,10 @@ Game.prototype.tick = function() {
 
 	this.handleLevelEvents();
 
-	if(this.time >= 13 && lastTime < 13)
+	if(this.time >= 13 && lastTime < 13){
 		this.spawnPlayerCar(true);
+		this.addMessage("Get lunch!");
+	}
 	
 
 	if(this.time >= (13 + 1/6) && lastTime < (13 + 1/6))  {
@@ -92,23 +100,34 @@ Game.prototype.tick = function() {
 	
 	if(this.time >= 13.75 && lastTime < 13.75) {
 		this.spawnPlayerCar(false);
+		this.addMessage("Get back to work!");
 		this.grid.disabled = false;
+	}
+
+	if(!this.level.endAtWork && this.time >= this.level.end && lastTime < this.level.end) {
+		this.addMessage("Go home!");
+		this.spawnPlayerCar(true,this.level.end + 0.25);
 	}
 
 	this.grid.tick(this.time);
 
 	this.clock.time = this.time;
 
-	if(this.time >= 17)
+	if(this.time >= this.level.end + 0.25)
 		this.win();
 };
 
 Game.prototype.handleLevelEvents = function() {
-	while(this.level[0] && this.time > this.level[0].time) {
-		var l = this.level.shift();
+	while(this.eventIndex < this.level.events.length && this.time > this.level.events[this.eventIndex].time) {
+		var l = this.level.events[this.eventIndex];
+
 		switch(l.type) {
 		case 'car':
 			var car = new Car(l.due);
+			if(l.x && l.y) {
+				car.x = l.x;
+				car.y = l.y;
+			}
 			this.grid.addCar(car);
 			break;
 		case 'message':
@@ -120,6 +139,8 @@ Game.prototype.handleLevelEvents = function() {
 		default:
 			throw "What is "+l.type+"?";
 		}
+
+		this.eventIndex++;
 	}
 };
 
@@ -127,17 +148,16 @@ Game.prototype.addMessage = function(message) {
 	var m = new Message(message);
 };
 
-Game.prototype.spawnPlayerCar = function(leaving) {
-	var playerCar = new Car(leaving ? 13 + 1/6: 14, true);
+Game.prototype.spawnPlayerCar = function(leaving, end) {
+	var e = end || (leaving ? 13 + 1/6: 14);
+	var playerCar = new Car(e, true);
 	if(leaving) {
 		playerCar.x = Math.floor(this.grid.width/2);
 		playerCar.y =  this.grid.height-1;
 		playerCar.node.addClass('leaving');
-		this.addMessage("Get lunch!");
 	}
 	else {
 		playerCar.returning = true;
-		this.addMessage("Get back to work!");
 	}
 
 	this.grid.addCar(playerCar);

@@ -53,6 +53,7 @@ button#levelSelectToggle {
 div#gamecontainer {
 	position:relative;
 	display:inline-block;
+	margin-left:256px;
 }
 
 div#gridContainer, div#clockContainer {
