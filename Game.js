@@ -1,16 +1,17 @@
 var CAR_WIDTH=64;
 var CAR_HEIGHT=96;
-var TICK_INTERVAL = 1000;
+var TICK_INTERVAL = 200;
 
 var MINUTES_PER_SECOND = 2;
 
 function Game() {
 	this.grid = new Grid(this,5,7);
 	this.clock = new Clock();
-	this.time = 9;
+	this.time = 0;
 	this.clock.time = this.time;
 
 	this.interval = null;
+	this.messageNode = document.getElementById('message');
 
 	var moves = 0;
 	Object.defineProperty(this,'moves',{
@@ -24,8 +25,10 @@ function Game() {
 
 Game.prototype.start = function(level) {
 	if(level) {
-		this.level = level;
+		this.level = level.slice();
+		this.level.sort(function(a,b){return a.start - b.start;});
 		this.moves = 0;
+		this.clock.time = this.time = 9;
 	}
 	this._lastTick = new Date();
 	this.interval = setInterval(this.tick.bind(this), TICK_INTERVAL);
@@ -42,9 +45,9 @@ Game.prototype.win = function() {
 	alert("Level complete");
 };
 
-Game.prototype.lose = function() {
+Game.prototype.lose = function(reason) {
 	this.stop();
-	alert("Game over");
+	alert(reason || "Game Over");
 };
 
 Game.prototype.tick = function() {
@@ -57,10 +60,12 @@ Game.prototype.tick = function() {
 	this.clock.time = this.time;
 
 	this.spawnCars();
-	if(this.time >= 13 && lastTime < 13) 
+	if(this.time >= 13 && lastTime < 13) {
 		this.spawnPlayerCar(true);
+		this.setMessage("Go on break!");
+	}
 
-	if(this.time >= 13.25 && lastTime < 13.25)  {
+	if(this.time >= (13 + 1/6) && lastTime < (13 + 1/6))  {
 		this.grid.disabled = true;
 		this.grid.selected = null;
 	}
@@ -68,11 +73,12 @@ Game.prototype.tick = function() {
 	if(this.time >= 13.75 && lastTime < 13.75) {
 		this.spawnPlayerCar(false);
 		this.grid.disabled = false;
+		this.setMessage("Get back to work!")
 	}
 
 	this.grid.tick(this.time);
 
-	if(!(this.grid.cars.length || this.level.length || this.time >= 17))
+	if(this.time >= 17)
 		this.win();
 };
 
@@ -83,8 +89,12 @@ Game.prototype.spawnCars = function() {
 	}
 };
 
+Game.prototype.setMessage = function(message) {
+	this.messageNode.innerHTML = message;
+};
+
 Game.prototype.spawnPlayerCar = function(leaving) {
-	var playerCar = new Car(leaving ? 13.25 : 14);
+	var playerCar = new Car(leaving ? 13 + 1/6: 14, true);
 	if(leaving) {
 		playerCar.x = Math.floor(this.grid.width/2);
 		playerCar.y =  this.grid.height-1;
@@ -92,8 +102,6 @@ Game.prototype.spawnPlayerCar = function(leaving) {
 	}
 	else
 		playerCar.returning = true;
-
-	playerCar.node.addClass('yours');
 
 	this.grid.addCar(playerCar);
 };
