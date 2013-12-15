@@ -14,3 +14,9 @@ HTMLElement.prototype.removeClass = function(name) {
 	}
 };
 
+HTMLElement.prototype.addRemoveClass = function(name, condition) {
+	if(condition)
+		this.addClass(name);
+	else
+		this.removeClass(name);
+};

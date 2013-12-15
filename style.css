@@ -26,20 +26,20 @@ footer {
 }
 
 section#levelSelector {
-	position:relative;
+	position:absolute;
 	width:256px;
-	left: 224px;
+	left: -32px;
 	height: 600px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	-webkit-transition: left 0.5s ease-in-out;
 	transition: left 0.5s ease-in-out;
-	padding-left:32px;
+	padding-left:36px;
 	-webkit-box-sizing:border-box;
 	box-sizing:border-box;
 }
 
 section#levelSelector.expanded {
-	left: 0px;
+	left: -256px;
 }
 
 button#levelSelectToggle {
@@ -48,6 +48,11 @@ button#levelSelectToggle {
 	width:32px;
 	margin:0;
 	vertical-align:middle;
+}
+
+div#gamecontainer {
+	position:relative;
+	display:inline-block;
 }
 
 div#gridContainer, div#clockContainer {
@@ -152,11 +157,14 @@ div.minute.hand {
 	height:45%;
 }
 
-div.message {
-	width:100%;
+div.message, div.level {
 	border-top: 1px solid rgba(255,255,255,0.25);
 	border-bottom: 1px solid rgba(0,0,0,0.5);
 	padding:1em;
+}
+
+div.message {
+	width:100%;
 	-webkit-box-sizing:border-box;
 	box-sizing:border-box;
 

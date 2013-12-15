@@ -177,7 +177,7 @@ Grid.prototype.tick = function() {
 			}
 		}
 		else
-			if(car.due - time <= 0.5)
-				car.urgent();
+			if(car.due - time <= 0.25)
+				car.urgent = true;
 	}
 };

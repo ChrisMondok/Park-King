@@ -5,7 +5,7 @@ function Car(due,yours) {
 	this.createNode();
 
 
-	var x, y, selected = false;
+	var x, y, selected = false, urgent = false;
 	Object.defineProperty(this, 'x', {
 		get: function() { return x; },
 		set: function(_x) {
@@ -32,6 +32,16 @@ function Car(due,yours) {
 			selected = s;
 		}
 	});
+
+	Object.defineProperty(this, 'urgent', {
+		get: function() { return urgent; },
+		set: function(u) {
+			if(urgent != u)
+				this.node.addRemoveClass("urgent",u);
+			urgent = u;
+		}
+	});
+			
 }
 
 Car.prototype.createNode = function() {
@@ -70,10 +80,6 @@ Car.prototype.leave = function() {
 		this.node.style.webkitTransform = "translate(0%,-100%)";
 		this.node.style.transform = "translate(0%,-100%)";
 	}
-};
-
-Car.prototype.urgent = function() {
-	this.node.addClass("urgent");
 };
 
 Car.prototype.isAtDestination = function(grid) {
