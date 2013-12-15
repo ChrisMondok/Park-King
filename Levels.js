@@ -1,11 +1,5 @@
 window.levels = [
-	{name: 'Test', start: 9, end: 17, events:[
-		{"type":"car","time":9.8,"due":9.8},
-		{"type":"car","time":10.93,"due":10.93},
-		{"type":"car","time":9.43,"due":9.43},
-		{"type":"car","time":10.483333333333333,"due":10.483333333333333}
-	]},
-	{name:'Tutorial', start: 9, end: 17, startAtWork: true, endAtWork: true, events:[
+	{name:'Tutorial', start: 9, end: 17, startAtWork: true, endAtWork: false, events:[
 		{type: 'message', time: 9, message: 'Welcome to the tutorial'},	
 		{type: 'message', time: 9.1, message: 'Drag cars to move them around.'},
 		{type: 'car', time: 9.25, due: 10.25},
@@ -28,7 +22,8 @@ window.levels = [
 		{type: 'car', time: 15.5, due: 16 + 1/6},
 		{type: 'car', time: 15.51, due: 16.75},
 		{type: 'car', time: 15.52, due: 17.25},
-		{type: 'message', time: 16, message:'Your day ends at 5:00 PM. Any cars that need to leave later than that are somebody else\'s problem'}
+		{type: 'message', time: 16, message:'Once you leave the lot, any cars that are still there are somebody else\'s problem.'},
+		{type: 'message', time: 16.5, message: 'Drag your car to the top row at the end of the day.'}
 	]},
 	{name:'Level 1', start: 9, end: 17, events:[
 		{type: 'car', time: 9.1, due: 11},
@@ -54,20 +49,40 @@ window.levels = [
 		{type: 'car', time: 16.5 + 1/6, due: 23},
 		{type: 'car', time: 16.75, due: 18}
 	]},
-	{name: 'Convenient Parking', start: 9, due: 17, events:[
-		{type: 'car', time: 9, due: 9.5},
-		{type: 'car', time: 9.5, due: 10.5},
-		{type: 'car', time: 10, due: 11},
-		{type: 'car', time: 10.8, due: 13},
-		{type: 'car', time: 12, due: 13},
-		{type: 'car', time: 12.5, due: 13.5},
-		{type: 'car', time: 13, due: 14.5},
-		{type: 'car', time: 14, due: 15},
-		{type: 'car', time: 14.5, due: 15.5},
-		{type: 'car', time: 15, due: 15.5},
-		{type: 'car', time: 15.6, due: 17.5},
-		{type: 'car', time: 16, due: 16.5},
-		{type: 'car', time: 16.4, due: 19}
+	{name: 'Convenient Parking', start: 9, end: 17, events:[
+		{"type":"car","time":9.016666666666667,"due":9.5},
+		{"type":"car","time":9.216666666666667,"due":9.833333333333334},
+		{"type":"car","time":9.116666666666667,"due":9.516666666666667},
+		{"type":"car","time":9.366666666666667,"due":10.05},
+		{"type":"car","time":9.783333333333333,"due":10.833333333333334},
+		{"type":"car","time":10.166666666666666,"due":11.416666666666666},
+		{"type":"car","time":9.6,"due":10.566666666666666},
+		{"type":"car","time":10.34,"due":11.8},
+		{"type":"car","time":10.1,"due":10.966666666666667},
+		{"type":"car","time":10.53,"due":12.316666666666666},
+		{"type":"car","time":10.133333333333333,"due":11.05},
+		{"type":"car","time":10.866666666666667,"due":12.75},
+		{"type":"car","time":11.28,"due":16.533333333333335},
+		{"type":"car","time":12,"due":14.016666666666667},
+		{"type":"car","time":11.116666666666667,"due":13.766666666666667},
+		{"type":"car","time":11.716666666666667,"due":14.966666666666667},
+		{"type":"car","time":11.516666666666667,"due":14.366666666666667},
+		{"type":"car","time":13.64,"due":15.916666666666666},
+		{"type":"car","time":12.05,"due":13.416666666666666},
+		{"type":"car","time":12.45,"due":15.166666666666666},
+		{"type":"car","time":13.083333333333334,"due":15.783333333333333},
+		{"type":"car","time":14.566666666666666,"due":16.3},
+		{"type":"car","time":14.25,"due":15.616666666666667},
+		{"type":"car","time":13.966666666666667,"due":16.516666666666666},
+		{"type":"car","time":14.616666666666667,"due":16.55},
+		{"type":"car","time":14.966666666666667,"due":16.716666666666665},
+		{"type":"car","time":15.7,"due":17.016666666666666},
+		{"type":"car","time":15.5,"due":16.983333333333334},
+		{"type":"car","time":15.966666666666667,"due":17.15},
+		{"type":"car","time":16.116666666666667,"due":17.433333333333334},
+		{"type":"car","time":16.383333333333333,"due":17.7},
+		{"type":"car","time":16.216666666666665,"due":16.666666666666668},
+		{"type":"car","time":16.833333333333332,"due":18.1}
 	]},
 	{name: 'Slow day', start: 9, end: 14.05, events:[
 		{type: 'message', time: 10, message: 'You: "Man, it\'s slow today..."'},
