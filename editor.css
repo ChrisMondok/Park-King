@@ -1,0 +1,33 @@
+section {
+	width:800px;
+}
+.editor {
+	background-color: lightgray;
+
+	min-height:64px;
+}
+
+.car-row {
+	height: 2em;
+	width:100%;
+	position:relative;
+	background-color: black;
+
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+}
+
+.car-row div.slider {
+	position:absolute;
+	top:0;
+	line-height:2em;
+	height:2em;
+	background-color: darkgray;
+	color:white;
+	text-align:center;
+	white-space: nowrap;
+}
+
+.car-row .slider span:first-child:after {
+	content:" → ";
+}

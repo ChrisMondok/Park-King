@@ -7,7 +7,6 @@ html, body {
 
 section {
 	text-align: left;
-	display:inline-block;
 	position:relative;
 	vertical-align:top;
 }

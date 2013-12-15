@@ -1,4 +1,10 @@
 window.levels = [
+	{name: 'Test', start: 9, end: 17, events:[
+		{"type":"car","time":9.8,"due":9.8},
+		{"type":"car","time":10.93,"due":10.93},
+		{"type":"car","time":9.43,"due":9.43},
+		{"type":"car","time":10.483333333333333,"due":10.483333333333333}
+	]},
 	{name:'Tutorial', start: 9, end: 17, startAtWork: true, endAtWork: true, events:[
 		{type: 'message', time: 9, message: 'Welcome to the tutorial'},	
 		{type: 'message', time: 9.1, message: 'Drag cars to move them around.'},

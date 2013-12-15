@@ -20,3 +20,15 @@ HTMLElement.prototype.addRemoveClass = function(name, condition) {
 	else
 		this.removeClass(name);
 };
+
+
+function DecimalToTime(decimal) {
+	var hours = Math.floor(decimal);
+	var minutes = Math.round(60 * (decimal % 1));
+
+	var h = hours % 12;
+	var m = minutes < 10 ? "0"+minutes : String(minutes);
+	var a = (hours < 12 ? 'AM' : 'PM');
+
+	return (h ? h : "12")+":"+m+a;
+};
