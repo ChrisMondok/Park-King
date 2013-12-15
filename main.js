@@ -16,11 +16,13 @@ window.addEventListener('load',function() {
 		localStorage.setItem('highscores',JSON.stringify(highScores));
 	}
 
-	game.onEnd = function() {
+	game.onEnd = function(game, won) {
 		levelSelector.addClass('expanded');
-		if(!highScores[currentLevel.name] || highScores[currentLevel.name] > game.moves) {
-			game.addMessage("New high score!");
-			setHighScore(currentLevel.name, game.moves);
+		if(won) {
+			if(!highScores[currentLevel.name] || highScores[currentLevel.name] > game.moves) {
+				game.addMessage("New high score!");
+				setHighScore(currentLevel.name, game.moves);
+			}
 		}
 	};
 

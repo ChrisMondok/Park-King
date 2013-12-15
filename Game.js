@@ -65,7 +65,7 @@ Game.prototype.win = function() {
 	this.stop();
 	this.addMessage("Level complete!");
 	if(this.onEnd)
-		this.onEnd(this);
+		this.onEnd(this, true);
 };
 
 Game.prototype.lose = function(reason) {
@@ -74,7 +74,7 @@ Game.prototype.lose = function(reason) {
 	this.grid.disabled = true;
 	this.addMessage(reason || "Game Over.");
 	if(this.onEnd)
-		this.onEnd(this);
+		this.onEnd(this, false);
 };
 
 Game.prototype.tick = function() {
@@ -135,6 +135,9 @@ Game.prototype.handleLevelEvents = function() {
 			break;
 		case 'fastforward':
 			this.time += l.amount;
+			break;
+		case 'function':
+			l.func(this);
 			break;
 		default:
 			throw "What is "+l.type+"?";

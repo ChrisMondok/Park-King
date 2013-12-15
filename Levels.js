@@ -49,6 +49,28 @@ window.levels = [
 		{type: 'car', time: 16.5 + 1/6, due: 23},
 		{type: 'car', time: 16.75, due: 18}
 	]},
+	{name: '9 to 5', start: 8, end: 18, events:[
+		{"type":"car","time":8.2,"due":17.65},
+		{"type":"car","time":8.2,"due":17.9},
+		{"type":"car","time":8.25,"due":11.5},
+		{"type":"car","time":8.283333333333333,"due":17.783333333333335},
+		{"type":"car","time":8.35,"due":17.65},
+		{"type":"car","time":8.416666666666666,"due":13.916666666666666},
+		{"type":"car","time":8.475,"due":17.3},
+		{"type":"car","time":8.55,"due":13.05},
+		{"type":"car","time":8.583333333333334,"due":17.633333333333333},
+		{"type":"car","time":8.683333333333334,"due":11.8},
+		{"type":"car","time":9.4125,"due":16.633333333333333},
+		{"type":"car","time":12.4375,"due":17.666666666666668},
+		{"type":"car","time":12.7,"due":17.816666666666666},
+		{"type":"car","time":12.825000000000001,"due":15.016666666666667},
+		{"type":"message", time:13, message:"Manager: Yeah, if you could stay until 6:00 today, that would be great."},
+		{"type":"car","time":14.05,"due":17.8},
+		{"type":"car","time":14.85,"due":17.983333333333334},
+		{"type":"car","time":15,"due":19.983333333333334},
+		{"type":"car","time":15.2,"due":17.983333333333334},
+		{"type":"car","time":16.033333333333335,"due":17.966666666666665}
+	]},
 	{name: 'Convenient Parking', start: 9, end: 17, events:[
 		{"type":"car","time":9.016666666666667,"due":9.5},
 		{"type":"car","time":9.216666666666667,"due":9.833333333333334},
@@ -88,5 +110,35 @@ window.levels = [
 		{type: 'message', time: 10, message: 'You: "Man, it\'s slow today..."'},
 		{type: 'fastforward', time: 10.15, amount: 2.6},
 		{type: 'message', time: 14, message: 'Manager: "Kid, what are you doing here? It\'s a holiday. Go home."'}
+	]},
+	{name: 'Full house', start: 9, end: 17, events:[
+		{"type":"car","time":9.131250000000001,"due":18.083333333333332},
+		{"type":"car","time":9.54375,"due":16.933333333333334},
+		{"type":"car","time":9.8,"due":22.466666666666665},
+		{"type":"car","time":9.416666666666666,"due":13.866666666666667},
+		{"type":"car","time":10.083333333333334,"due":16.45},
+		{"type":"car","time":9.95,"due":16.6},
+		{"type":"car","time":10.837499999999999,"due":17.8},
+		{"type":"car","time":10.1625,"due":23.316666666666666},
+		{"type":"car","time":11.283333333333333,"due":15.933333333333334},
+		{"type":"car","time":10.537500000000001,"due":23.9},
+		{"type":"car","time":11.8875,"due":23.966666666666665},
+		{"type":"car","time":10.283333333333333,"due":22.283333333333335},
+		{"type":"car","time":11.116666666666667,"due":14.933333333333334},
+		{"type":"car","time":9.716666666666667,"due":22.966666666666665},
+		{"type":"car","time":10.59375,"due":23.866666666666667},
+		{"type":"car","time":12.1125,"due":23.966666666666665},
+		{"type":"car","time":10.066666666666666,"due":16.366666666666667},
+		{"type":"car","time":13.14375,"due":23.15},
+		{"type":"car","time":11.83125,"due":23.7},
+		{"type":"car","time":11.1375,"due":23.566666666666666},
+		{"type":"function", time: 14.1, func:function(game) {
+			game.addMessage("Customer: \"We've got to get my car out, it's an emergency!\"");
+			for(var i = 0; i < 2; i++) {
+				var chosenCar = game.grid.cars[Math.floor(Math.random() * game.grid.cars.length)];
+				chosenCar.due = game.time + (1/3);
+				chosenCar.urgent = true;
+			}
+		}}
 	]}
 ];
