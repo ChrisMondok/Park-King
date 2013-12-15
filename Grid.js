@@ -72,8 +72,11 @@ Grid.prototype.addCar = function(car) {
 };
 
 Grid.prototype.removeCar = function(car) {
-	this.node.removeChild(car.node);
-	this.cars.splice(this.cars.indexOf(car),1);
+	var index = this.cars.indexOf(car);
+	if(index != -1) {
+		this.node.removeChild(car.node);
+		this.cars.splice(index,1);
+	}
 };
 
 Grid.prototype.clear = function() {
@@ -103,7 +106,7 @@ Grid.prototype.carUnclicked = function(car,e) {
 	this.selected = null;
 	e.preventDefault();
 	e.stopPropagation();
-}
+};
 
 Grid.prototype.mouseMove = function(e) {
 	if(!this.selected || this.disabled)
@@ -138,7 +141,7 @@ Grid.prototype.clearSelection = function(e) {
 
 Grid.prototype.carsCollided = function(a,b) {
 	this.selected = null;
-	alert("Collision. Game Over");
+	this.game.lose("Cars collided");
 };
 
 Grid.prototype.checkCollision = function() {
@@ -148,11 +151,15 @@ Grid.prototype.checkCollision = function() {
 		for(var j = i+1; j < this.cars.length; j++) {
 			if(j != i) {
 				otherCar = this.cars[j];
-				if(thisCar.x == otherCar.x && thisCar.y == otherCar.y)
+				if(thisCar.x == otherCar.x && thisCar.y == otherCar.y) {
 					this.carsCollided(thisCar,otherCar);
+					return true;
+				}
 			}
 		}
 	}
+
+	return false;
 };
 
 Grid.prototype.tick = function() {
@@ -166,8 +173,7 @@ Grid.prototype.tick = function() {
 				setTimeout(this.removeCar.bind(this,car),500);
 			}
 			else {
-				alert("Car left in lot");
-				this.game.lose();
+				this.game.lose("Car left in lot");
 			}
 		}
 		else

@@ -1,9 +1,9 @@
-function Car(due) {
+function Car(due,yours) {
 	this.due = due;
-
+	this.yours = yours || false;
+	this.returning = false;
 	this.createNode();
 
-	this.returning = false;
 
 	var x, y, selected = false;
 	Object.defineProperty(this, 'x', {
@@ -36,17 +36,23 @@ function Car(due) {
 
 Car.prototype.createNode = function() {
 	this.node = document.createElement('div');
-	this.node.className = 'car';
 	this.node.style.width = CAR_WIDTH+'px';
 	this.node.style.height = CAR_HEIGHT+'px';
 	this.node.style.lineHeight = CAR_HEIGHT+'px';
-	this.node.style.backgroundColor = "hsl("+Math.floor(Math.random() * 360)+",50%,75%)";
+	if(!this.yours)
+		this.node.style.backgroundColor = "hsl("+Math.floor(Math.random() * 360)+",50%,75%)";
+
+	if(this.yours)
+		this.node.className = 'yours car';
+	else
+		this.node.className = 'car';
+
 	this.node.innerHTML = this.decimalToTime(this.due);
 };
 
 Car.prototype.decimalToTime = function(decimal) {
 	var hours = Math.floor(decimal);
-	var minutes = 60 * (decimal % 1);
+	var minutes = Math.round(60 * (decimal % 1));
 
 	var h = hours % 12;
 	var m = minutes < 10 ? "0"+minutes : String(minutes);
