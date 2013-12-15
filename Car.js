@@ -1,11 +1,10 @@
-function Car(due,yours) {
-	this.due = due;
+function Car(duetime,yours) {
 	this.yours = yours || false;
 	this.returning = false;
 	this.createNode();
 
 
-	var x, y, selected = false;
+	var x, y, selected = false, urgent = false, due;
 	Object.defineProperty(this, 'x', {
 		get: function() { return x; },
 		set: function(_x) {
@@ -32,6 +31,25 @@ function Car(due,yours) {
 			selected = s;
 		}
 	});
+
+	Object.defineProperty(this, 'urgent', {
+		get: function() { return urgent; },
+		set: function(u) {
+			if(urgent != u)
+				this.node.addRemoveClass("urgent",u);
+			urgent = u;
+		}
+	});
+
+	Object.defineProperty(this, 'due', {
+		get: function(){return due;},
+		set: function(d){
+			due = d;
+			this.node.innerHTML = DecimalToTime(due);
+		}
+	});
+
+	this.due = duetime;
 }
 
 Car.prototype.createNode = function() {
@@ -46,8 +64,6 @@ Car.prototype.createNode = function() {
 		this.node.className = 'yours car';
 	else
 		this.node.className = 'car';
-
-	this.node.innerHTML = this.decimalToTime(this.due);
 };
 
 Car.prototype.decimalToTime = function(decimal) {
@@ -70,10 +86,6 @@ Car.prototype.leave = function() {
 		this.node.style.webkitTransform = "translate(0%,-100%)";
 		this.node.style.transform = "translate(0%,-100%)";
 	}
-};
-
-Car.prototype.urgent = function() {
-	this.node.addClass("urgent");
 };
 
 Car.prototype.isAtDestination = function(grid) {

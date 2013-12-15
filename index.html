@@ -1,23 +1,36 @@
 <html>
 	<head>
-		<title>Parking</title>
+		<title>Park King</title>
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width, height=device-height">
 		<meta name="format-detection" content="false">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<script src="Game.js"></script>
+		<script src="Levels.js"></script>
 		<script src="Grid.js"></script>
 		<script src="Clock.js"></script>
+		<script src="Message.js"></script>
 		<script src="Car.js"></script>
+		<script src="util.js"></script>
 		<script src="main.js"></script>
 		<link rel="stylesheet" href="style.css"/>
 	</head>
 	<body>
-		<section id="game">
-			<div id="gridContainer"></div>
-			<div id="clockContainer"></div>
-			<footer>
-				<div><span id="moveCount">0</span> moves</div>
-				<div id="message"></div>
-			</footer>
-		</section>
+		<div id="gamecontainer">
+			<section id="levelSelector">
+				<header>
+					<button id="levelSelectToggle">←</button>
+					Levels
+				</header>
+			</section>
+			<section id="game">
+				<header id="levelname"></header>
+				<div id="gridContainer"></div>
+				<div id="clockContainer"></div>
+				<footer>
+					<div><span id="moveCount">0</span> moves</div>
+					<div id="messagebox"></div>
+				</footer>
+			</section>
+		</div>
 	</body>
 </html>

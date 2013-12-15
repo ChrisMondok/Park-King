@@ -1,46 +1,54 @@
-HTMLElement.prototype.addClass = function(name) {
-	var classes = this.className.split(' ').filter(function(n){return Boolean(n);});
-	if(classes.indexOf(name) == -1) {
-		classes.push(name);
-		this.className = classes.join(' ');
-	}
-};
-
-HTMLElement.prototype.removeClass = function(name) {
-	var classes = this.className.split(' ').filter(function(n){return Boolean(n);});
-	if(classes.indexOf(name) != -1) {
-		classes.splice(classes.indexOf(name), 1);
-		this.className = classes.join(' ');
-	}
-};
-
-var level1 = [
-	{start: 9.1, end: 11},
-	{start: 9.15, end: 13.5},
-	{start: 9.2, end: 11.25},
-	{start: 9.4, end: 15},
-	{start: 9.5, end: 16.5},
-	{start: 10, end: 20},
-	{start: 10.3, end: 12},
-	{start: 11.1, end: 11.75},
-	{start: 11.5, end: 12.5},
-	{start: 12, end: 14},
-	{start: 12.5, end: 16},
-	{start: 12.52, end: 16},
-	{start: 13.1, end: 14.25},
-	{start: 13.5, end: 15 + 5/60},
-	{start: 13, end: 15},
-	{start: 13 + 1/6, end: 16 + 40/60},
-	{start: 16, end: 22},
-	{start: 16.5 + 1/6, end: 23}
-];
-
 window.addEventListener('load',function() {
 	var game = new Game();
+	var currentLevel = undefined;
+	var highScores = localStorage.getItem('highscores');
+	highScores = highScores ? JSON.parse(highScores) : {};
+
 	game.grid.renderInto(document.getElementById('gridContainer'));
 	game.clock.renderInto(document.getElementById('clockContainer'));
 
-	game.start(level1);
-
 	window.GAME = game;
+
+	var levelSelector = document.getElementById('levelSelector');
+
+	function setHighScore(name, moves) {
+		highScores[name] = moves;
+		localStorage.setItem('highscores',JSON.stringify(highScores));
+	}
+
+	game.onEnd = function(game, won) {
+		levelSelector.addClass('expanded');
+		if(won) {
+			if(!highScores[currentLevel.name] || highScores[currentLevel.name] > game.moves) {
+				game.addMessage("New high score!");
+				setHighScore(currentLevel.name, game.moves);
+			}
+		}
+	};
+
+	document.getElementById('levelSelectToggle').addEventListener('click', function() {
+		if(levelSelector.className.indexOf('expanded') == -1)
+			levelSelector.addClass('expanded');
+		else
+			levelSelector.removeClass('expanded');
+	});
+
+	levels.forEach(function(l) {
+		var row = document.createElement('div');
+		row.className = 'level';
+		row.innerHTML = l.name;
+		levelSelector.appendChild(row);
+		row.addEventListener('click', function() {
+			startLevel(l);
+			levelSelector.removeClass('expanded');
+		});
+	});
+
+	function startLevel(l) {
+		currentLevel = l;
+		game.start(l);
+	}
+
+	startLevel(levels[0]);
+
 });
