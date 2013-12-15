@@ -9,6 +9,8 @@ function Game() {
 	this.clock = new Clock();
 	this.time = 0;
 	this.clock.time = this.time;
+	this.lost = false;
+	this._wasDisabled = false;
 
 	this.interval = null;
 	this.messageNode = document.getElementById('message');
@@ -25,12 +27,21 @@ function Game() {
 
 Game.prototype.start = function(level) {
 	if(level) {
-		this.level = level.slice();
-		this.level.sort(function(a,b){return a.start - b.start;});
+		this.level = level.events.slice();
+		this.level.sort(function(a,b){return a.time - b.time;});
 		this.moves = 0;
 		this.clock.time = this.time = 9;
+		this.grid.clear();
+		this.lost = false;
+		this.grid.disabled = false;
+		document.getElementById('levelname').innerHTML = level.name;
 	}
+	else
+		this.grid.disabled = this._wasDisabled;
+
 	this._lastTick = new Date();
+	if(this.interval)
+		clearInterval(this.interval)
 	this.interval = setInterval(this.tick.bind(this), TICK_INTERVAL);
 };
 
@@ -38,16 +49,21 @@ Game.prototype.stop = function() {
 	if(this.interval)
 		clearInterval(this.interval);
 	this.interval = null;
+	this.grid.selected = null;
+	this._wasDisabled = this.grid.disabled;
+	this.grid.disabled = true;
 };
 
 Game.prototype.win = function() {
 	this.stop();
-	alert("Level complete");
+	this.addMessage("Level complete!");
 };
 
 Game.prototype.lose = function(reason) {
 	this.stop();
-	alert(reason || "Game Over");
+	this.lost = true;
+	this.grid.disabled = true;
+	this.addMessage(reason || "Game Over.");
 };
 
 Game.prototype.tick = function() {
@@ -57,13 +73,12 @@ Game.prototype.tick = function() {
 
 	var lastTime = this.time;
 	this.time += (1/60)*dt*MINUTES_PER_SECOND;
-	this.clock.time = this.time;
 
-	this.spawnCars();
-	if(this.time >= 13 && lastTime < 13) {
+	this.handleLevelEvents();
+
+	if(this.time >= 13 && lastTime < 13)
 		this.spawnPlayerCar(true);
-		this.setMessage("Go on break!");
-	}
+	
 
 	if(this.time >= (13 + 1/6) && lastTime < (13 + 1/6))  {
 		this.grid.disabled = true;
@@ -73,24 +88,38 @@ Game.prototype.tick = function() {
 	if(this.time >= 13.75 && lastTime < 13.75) {
 		this.spawnPlayerCar(false);
 		this.grid.disabled = false;
-		this.setMessage("Get back to work!")
 	}
 
 	this.grid.tick(this.time);
+
+	this.clock.time = this.time;
 
 	if(this.time >= 17)
 		this.win();
 };
 
-Game.prototype.spawnCars = function() {
-	while(this.level[0] && this.time > this.level[0].start) {
-		var car = new Car(this.level.shift().end);
-		this.grid.addCar(car);
+Game.prototype.handleLevelEvents = function() {
+	while(this.level[0] && this.time > this.level[0].time) {
+		var l = this.level.shift();
+		switch(l.type) {
+		case 'car':
+			var car = new Car(l.due);
+			this.grid.addCar(car);
+			break;
+		case 'message':
+			this.addMessage(l.message);
+			break;
+		case 'fastforward':
+			this.time += l.amount;
+			break;
+		default:
+			throw "What is "+l.type+"?";
+		}
 	}
 };
 
-Game.prototype.setMessage = function(message) {
-	this.messageNode.innerHTML = message;
+Game.prototype.addMessage = function(message) {
+	var m = new Message(message);
 };
 
 Game.prototype.spawnPlayerCar = function(leaving) {
@@ -99,9 +128,12 @@ Game.prototype.spawnPlayerCar = function(leaving) {
 		playerCar.x = Math.floor(this.grid.width/2);
 		playerCar.y =  this.grid.height-1;
 		playerCar.node.addClass('leaving');
+		this.addMessage("Get lunch!");
 	}
-	else
+	else {
 		playerCar.returning = true;
+		this.addMessage("Get back to work!");
+	}
 
 	this.grid.addCar(playerCar);
 };
